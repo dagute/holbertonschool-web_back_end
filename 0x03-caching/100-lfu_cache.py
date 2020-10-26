@@ -48,3 +48,4 @@ class LFUCache(BaseCaching):
             else:
                 self.lfu[key] = 1
             return value
+        return None
