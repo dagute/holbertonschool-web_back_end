@@ -1,35 +1,50 @@
-#!/usr/bin/env python3
-"""LFU Caching"""
+#!/usr/bin/python3
+"""LFU caching"""
 
+from collections import OrderedDict
 from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
     """Caching system and Inherits from BaseCaching"""
-
     def __init__(self):
-        """Constructor"""
+        self.lru = OrderedDict()
+        self.lfu = {}
         super().__init__()
-        self.current_keys = []
 
     def put(self, key, item):
-        """ Add an item in the cache """
-        if key and item:
-            self.cache_data[key] = item
-            if key not in self.current_keys:
-                self.current_keys.append(key)
+        """Add an item in the cache"""
+        if key in self.cache_data:
+            del self.cache_data[key]
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS  - 1:
+            least = min(self.lfu.values())
+            freq = [k for k, v in self.lfu.items() if v == least]
+            if len(freq) == 1:
+                print("DISCARD:", freq[0])
+                self.lru.pop(freq[0])
+                del self.lfu[freq[0]]
             else:
-                self.current_keys.append(self.current_keys.pop(
-                    self.current_keys.index(key)))
-            if len(self.current_keys) > BaseCaching.MAX_ITEMS:
-                least_key = self.current_keys.pop(0)
-                del self.cache_data[least_key]
-                print('DISCARD: {}'.format(least_key))
+                for k, _ in list(self.lru.items()):
+                    if k in freq:
+                        print("DISCARD:", k)
+                        self.lru.pop(k)
+                        del self.lfu[k]
+                        break
+        self.lru[key] = item
+        self.lru.move_to_end(key)
+        if key in self.lfu:
+            self.lfu[key] += 1
+        else:
+            self.lfu[key] = 1
+        self.cache_data = dict(self.lru)
 
     def get(self, key):
-        """return the value in self.cache_data linked to key"""
-        if key and key in self.cache_data:
-            self.current_keys.append(self.current_keys.pop(
-                self.current_keys.index(key)))
-            return self.cache_data.get(key)
-        return None
+        """return an item from the cache"""
+        if key in self.lru:
+            value = self.lru[key]
+            self.lru.move_to_end(key)
+            if key in self.lfu:
+                self.lfu[key] += 1
+            else:
+                self.lfu[key] = 1
+            return value
