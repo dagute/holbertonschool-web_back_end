@@ -40,8 +40,8 @@ class LFUCache(BaseCaching):
 
     def get(self, key):
         """return an item from the cache"""
-        if key in self.lru:
-            value = self.lru[key]
+        if key and key in self.cache_data:
+            value = self.cache_data[key]
             self.lru.move_to_end(key)
             if key in self.lfu:
                 self.lfu[key] += 1
