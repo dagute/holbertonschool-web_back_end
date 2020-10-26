@@ -14,9 +14,9 @@ class LFUCache(BaseCaching):
 
     def put(self, key, item):
         """Add an item in the cache"""
-        if key in self.cache_data:
-            del self.cache_data[key]
-        if len(self.cache_data) > BaseCaching.MAX_ITEMS - 1:
+        if key in self.lru:
+            del self.lru[key]
+        if len(self.lru) > BaseCaching.MAX_ITEMS - 1:
             least = min(self.lfu.values())
             freq = [k for k, v in self.lfu.items() if v == least]
             if len(freq) == 1:
