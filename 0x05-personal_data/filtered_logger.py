@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Personal data"""
-
 import logging
 import os
 import re
@@ -14,20 +13,20 @@ PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 def filter_datum(fields: List[str], redaction: str, message: str,
                  separator: str) -> str:
     """returns the log message obfuscated"""
-    for x in fields:
-        message = re.sub(rf"{x}=(.*?)\{separator}",
-                         f'{x}={redaction}{separator}', message)
+    for field in fields:
+        message = re.sub(fr"{field}=.+?{separator}",
+                         f'{field}={redaction}{separator}', message)
     return message
 
 
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class"""
-
     REDACTION = "***"
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]):
+        """constructor"""
         self.fields = fields
         super(RedactingFormatter, self).__init__(self.FORMAT)
 
