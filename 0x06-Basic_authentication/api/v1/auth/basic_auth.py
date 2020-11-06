@@ -47,8 +47,8 @@ class BasicAuth(Auth):
         """
         user_object_from_credentials
         """
-        if not user_email or not isinstance(user_email, str)\
-           or not user_pwd or not isinstance(user_pwd, str):
+        if not user_email or not user_pwd or \
+           not isinstance(user_email, str) or not isinstance(user_pwd, str):
             return None
         users = User.search({'email': user_email})
         if not users:
