@@ -15,7 +15,7 @@ class Auth:
         """
         require_auth
         """
-        if not path or not excluded_paths:
+        if not path or not excluded_paths or not len(excluded_paths)::
             return True
         if path[-1] != '/':
             path = path + '/'
