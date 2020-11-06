@@ -35,7 +35,7 @@ class BasicAuth(Auth):
 
     def extract_user_credentials(self, db64: str) -> (str, str):
         """
-        extract_user_credentials.
+        extract_user_credentials
         """
         if not db64 or type(db64) != str or ":" not in db64:
             return (None, None)
@@ -50,18 +50,19 @@ class BasicAuth(Auth):
         if not user_email or not user_pwd or \
            not isinstance(user_email, str) or not isinstance(user_pwd, str):
             return None
-        users = User.search({'email': user_email})
-        if not users:
+        try:
+            user = User.search({'email': user_email})
+        except Exception:
             return None
-        if users:
-            for user in users:
-                if user.is_valid_password(user_pwd):
-                    return user
+        if user:
+            for u in user:
+                if u.is_valid_password(user_pwd):
+                    return u
         return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
-        current_user.
+        current_user
         """
         try:
             header = self.authorization_header(request)
