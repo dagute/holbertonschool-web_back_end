@@ -51,13 +51,11 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Uses find_user_by to locate the user"""
-        try:
-            user = self.find_user_by(id=user_id)
-            column_names = User.__table__.columns.keys()
-            for key, val in kwargs.items():
-                setattr(user, key, val)
-            self._session.commit()
-        except Exception:
-            for key in kwargs.keys():
-                if key not in column_names:
-                    raise ValueError
+        user = self.find_user_by(id=user_id)
+        column_names = User.__table__.columns.keys()
+        for key, val in kwargs.items():
+            setattr(user, key, val)
+        self._session.commit()
+        for key in kwargs.keys():
+            if key not in column_names:
+                raise ValueError
