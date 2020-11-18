@@ -30,8 +30,6 @@ class DB:
 
     def add_user(self, email: str, hashed_password: str) -> User:
         """add the user"""
-        if not email or not hashed_password:
-            return
         user = User(email=email, hashed_password=hashed_password)
         self._session.add(user)
         self._session.commit()
@@ -43,10 +41,10 @@ class DB:
         input arguments"""
         if not User.__dict__.get(*filters):
             raise InvalidRequestError
-        qs = self._session.query(User).filter_by(**filters)
-        if not qs.first():
+        query = self._session.query(User).filter_by(**filters)
+        if not query.first():
             raise NoResultFound
-        return qs.first()
+        return query.first()
 
     def update_user(self, user_id: int, **kwargs: Any):
         """Uses find_user_by to locate the user"""
