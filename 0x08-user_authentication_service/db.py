@@ -58,4 +58,6 @@ class DB:
                 setattr(user, key, val)
             self._session.commit()
         except Exception:
-            raise ValueError
+            for key in kwargs.keys():
+                if key not in column_names:
+                    raise ValueError
