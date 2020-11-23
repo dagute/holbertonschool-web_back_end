@@ -62,7 +62,7 @@ class TestMemoize(unittest.TestCase):
                 """a_property"""
                 return self.a_method()
         with patch.object(TestClass, "a_method") as mock_t:
-            mock_a.return_value = True
+            mock_t.return_value = True
             t = TestClass()
             t.a_property
             t.a_property
