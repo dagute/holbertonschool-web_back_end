@@ -9,8 +9,7 @@ from client import GithubOrgClient
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """Testing GithubOrgClient class
-    """
+    """Testing GithubOrgClient class"""
     @parameterized.expand([
         ("google", {"payload": True}),
         ("abc", {"payload": True}),
@@ -19,7 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, x, y, mock_get):
         """test_org"""
         mock_get.return_value = y
-        git_c = GithubOrgClient(a)
+        git_c = GithubOrgClient(x)
         res = git_c.org
         self.assertEqual(res, y)
         mock_get.assert_called_once()
