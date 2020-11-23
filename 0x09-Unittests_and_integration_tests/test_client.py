@@ -3,7 +3,7 @@
 
 import unittest
 from unittest import mock
-from unittest.mock import PropertyMock, Mock
+from unittest.mock import patch, Mock, PropertyMock
 from parameterized import parameterized
 from client import GithubOrgClient
 
@@ -59,3 +59,6 @@ class TestGithubOrgClient(unittest.TestCase):
         git_c = GithubOrgClient("google")
         res = git_c.has_license(x, y)
         self.assertEqual(res, z)
+
+if __name__ == '__main__':
+    unittest.main()
