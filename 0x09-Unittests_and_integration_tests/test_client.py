@@ -42,8 +42,8 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_g:
             mock_g.return_value = "http://google.com"
-            g = GithubOrgClient("instagram")
-            res = g.public_repos()
+            git_c = GithubOrgClient("instagram")
+            res = git_c.public_repos()
             self.assertEqual(res, ["google", "abc"])
             m_get_json.assert_called_once()
             mock_g.assert_called_once()
@@ -58,6 +58,29 @@ class TestGithubOrgClient(unittest.TestCase):
         git_c = GithubOrgClient("google")
         res = git_c.has_license(x, y)
         self.assertEqual(res, z)
+
+    @parameterized_class(('org_payload', 'repos_payload',
+                          'expected_repos', 'apache2_repos'),
+                         TEST_PAYLOAD)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """TestIntegrationGithubOrgClient class"""
+
+    @classmethod
+    def setUpClass(self):
+        """setUpClass"""
+        pass
+
+    @classmethod
+    def tearDownClass(self):
+        """tearDownClass"""
+        cls.get_patcher.stop()
+
+    # @parameterized_class()
+    @patch('utils.requests.get')
+    def test_public_repos(self):
+        """test_public_repos"""
+        self.assertTrue(True)
+
 
 if __name__ == '__main__':
     unittest.main()
