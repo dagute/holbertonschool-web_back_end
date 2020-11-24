@@ -59,29 +59,5 @@ class TestGithubOrgClient(unittest.TestCase):
         res = git_c.has_license(x, y)
         self.assertEqual(res, z)
 
-
-@parameterized_class(('org_payload', 'repos_payload',
-                      'expected_repos', 'apache2_repos'),
-                     TEST_PAYLOAD)
-class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """TestIntegrationGithubOrgClient class"""
-
-    @classmethod
-    def setUpClass(self):
-        """setUpClass"""
-        pass
-
-    @classmethod
-    def tearDownClass(self):
-        """tearDownClass"""
-        pass
-
-    # @parameterized_class()
-    @patch('utils.requests.get')
-    def test_public_repos(self):
-        """test_public_repos"""
-        self.assertTrue(True)
-
-
 if __name__ == '__main__':
     unittest.main()
