@@ -73,7 +73,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         """tearDownClass"""
-        cls.get_patcher.stop()
+        pass
 
     # @parameterized_class()
     @patch('utils.requests.get')
