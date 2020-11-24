@@ -42,8 +42,8 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_g:
             mock_g.return_value = "http://google.com"
-            git_c = GithubOrgClient("instagram")
-            res = git_c.public_repos()
+            g = GithubOrgClient("instagram")
+            res = g.public_repos()
             self.assertEqual(res, ["google", "abc"])
             m_get_json.assert_called_once()
             mock_g.assert_called_once()
