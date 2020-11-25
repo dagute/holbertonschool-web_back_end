@@ -59,5 +59,6 @@ class TestGithubOrgClient(unittest.TestCase):
         res = git_c.has_license(x, y)
         self.assertEqual(res, z)
 
+
 if __name__ == '__main__':
     unittest.main()
