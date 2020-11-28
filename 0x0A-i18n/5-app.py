@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Parametrize templates"""
 from flask import Flask, jsonify, render_template, request, g
-from flask_babel import Babel
+from flask_babel import Babel, gettext
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -31,6 +31,17 @@ def get_user(login_as):
     return None
 
 
+@babel.localeselector
+def get_locale() -> List[str]:
+    """get locale"""
+    local_l = request.args.get("locale")
+    s_lang = app.config['LANGUAGES']
+    if local_l in s_lang:
+        return local_l
+    else:
+        return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
 @app.before_request
 def before_request():
     """Before request"""
@@ -40,15 +51,6 @@ def before_request():
         g.user = user
     else:
         g.user = None
-
-
-@babel.localeselector
-def get_locale() -> List[str]:
-    """get locale"""
-    local_l = request.args.get("locale")
-    if local_l:
-        return local_l
-    return request.accept_languages.best_match(Config.LANGUAGES)
 
 
 @app.route("/", methods=["GET"])
