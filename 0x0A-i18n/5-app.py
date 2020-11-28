@@ -24,15 +24,18 @@ users = {
 }
 
 
-def get_user(login_as):
+def get_user():
     """Gets user"""
-    if login_as and int(login_as) in users:
-        return users.get(int(login_as))
-    return None
+    if request.args.get('login_as'):
+        user_id = int(request.args.get('login_as'))
+        if user_id in users:
+            return users.get(user)
+    else:
+        return None
 
 
 @babel.localeselector
-def get_locale() -> List[str]:
+def get_locale():
     """get locale"""
     local_l = request.args.get("locale")
     s_lang = app.config['LANGUAGES']
@@ -45,12 +48,7 @@ def get_locale() -> List[str]:
 @app.before_request
 def before_request():
     """Before request"""
-    user_id = request.args.get("login_as")
-    if user_id:
-        user = get_user(user_id)
-        g.user = user
-    else:
-        g.user = None
+    g.user = get_user()
 
 
 @app.route("/", methods=["GET"])
