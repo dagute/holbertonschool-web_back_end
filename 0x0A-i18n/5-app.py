@@ -26,11 +26,10 @@ users = {
 
 def get_user():
     """Gets user"""
-    if request.args.get('login_as'):
-        user_id = int(request.args.get('login_as'))
-        if user_id in users:
-            return users.get(user)
-    else:
+    try:
+        user_id = request.args.get('login_as')
+        return users[int(user_id)]
+    except Exception:
         return None
 
 
