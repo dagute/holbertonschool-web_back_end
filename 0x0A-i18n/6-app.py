@@ -26,22 +26,19 @@ users = {
 }
 
 
-def get_user(login_as) -> Dict:
+def get_user():
     """Gets user"""
-    if login_as and int(login_as) in users:
-        return users.get(int(login_as))
-    return None
+    try:
+        user_id = request.args.get('login_as')
+        return users[int(user_id)]
+    except Exception:
+        return None
 
 
 @app.before_request
 def before_request():
     """Before request"""
-    user_id = request.args.get("login_as")
-    if user_id:
-        user = get_user(user_id)
-        g.user = user
-    else:
-        g.user = None
+    g.user = get_user()
 
 
 @babel.localeselector
