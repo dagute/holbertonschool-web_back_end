@@ -42,9 +42,9 @@ def replay(method: Callable):
     aux = c.get(name).decode('utf-8')
     inputs = c.lrange(storage + ':inputs', 0, -1)
     outputs = c.lrange(storage + ':outputs', 0, -1)
-    print("{} was called {} times:".format(storage, aux))
+    print('{} was called {} times:'.format(storage, aux))
     for i, o in zip(inputs, outputs):
-        print("{}(*('{}',)) -> {}".format(storage, i.decode("utf-8"),
+        print('{}(*{}) -> {}'.format(storage, i.decode("utf-8"),
                                           o.decode("utf-8")))
 
 
