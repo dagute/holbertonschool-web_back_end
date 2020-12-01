@@ -67,10 +67,10 @@ class Cache:
             return fn(self._redis.get(key))
         return self._redis.get(key)
 
-    def get_str(self, data: bytes) -> str:
+    def get_str(self, data: str) -> str:
         """Convert bytes to str"""
-        return data.decode('utf-8')
+        return self._redis.get(data).decode('utf-8')
 
-    def get_int(self, data: bytes) -> int:
+    def get_int(self, data: str) -> int:
         """Convert bytes to int"""
-        return int.from_bytes(data, byteorder)
+        return int(self._redis.get(data))
