@@ -38,12 +38,12 @@ def call_history(method: Callable) -> Callable:
 def replay(method: Callable):
     """Replay function"""
     c = redis.Redis()
-    storage = Cache.store.__qualname__
+    storage = method.__qualname__
     aux = c.get(name).decode('utf-8')
-    inputs = c.lrange("{}:inputs".format(storage), 0, -1)
-    outputs = c.lrange("{}:outputs".format(storage), 0, -1)
+    inputs = c.lrange(storage + ':inputs', 0, -1)
+    outputs = c.lrange(storage + ':outputs', 0, -1)
     print("{} was called {} times:".format(storage, aux))
-    for i, o in tuple(zip(inputs, outputs)):
+    for i, o in zip(inputs, outputs):
         print("{}(*('{}',)) -> {}".format(storage, i.decode("utf-8"),
                                           o.decode("utf-8")))
 
