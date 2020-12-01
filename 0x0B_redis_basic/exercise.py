@@ -39,7 +39,7 @@ def replay(method: Callable):
     """Replay function"""
     c = redis.Redis()
     storage = method.__qualname__
-    aux = c.get(name).decode('utf-8')
+    aux = c.get(storage).decode('utf-8')
     inputs = c.lrange(storage + ':inputs', 0, -1)
     outputs = c.lrange(storage + ':outputs', 0, -1)
     print("{} was called {} times:".format(storage, aux))
