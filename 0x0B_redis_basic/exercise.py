@@ -4,6 +4,7 @@ import redis
 import uuid
 from functools import wraps
 from typing import Union, Callable, Any, Optional, List
+import sys
 
 
 def count_calls(method: Callable) -> Callable:
