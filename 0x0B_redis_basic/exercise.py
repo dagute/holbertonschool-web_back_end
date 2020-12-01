@@ -44,7 +44,7 @@ def replay(method: Callable):
     outputs = c.lrange(storage + ':outputs', 0, -1)
     print("{} was called {} times:".format(storage, aux))
     for i, o in zip(inputs, outputs):
-        print("{}(*('{}',)) -> {}".format(storage, i.decode("utf-8"),
+        print('{}(*{}) -> {}'.format(storage, i.decode("utf-8"),
                                           o.decode("utf-8")))
 
 
