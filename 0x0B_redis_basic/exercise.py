@@ -72,6 +72,10 @@ class Cache:
             return fn(self._redis.get(key))
         return self._redis.get(key)
 
+    def get_list(self, k: str) -> List:
+        """get list"""
+        return self._redis.lrange(k, 0, -1)
+
     def get_str(self, data: bytes) -> str:
         """Convert bytes to str"""
         return data.decode('utf-8')
