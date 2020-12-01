@@ -3,8 +3,7 @@
 import redis
 import uuid
 from functools import wraps
-from typing import Union, Callable, Any, Optional, List
-import sys
+from typing import Union, Callable, Any, Optional
 
 
 def count_calls(method: Callable) -> Callable:
@@ -34,21 +33,17 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method: Callable) -> None:
+def replay(method: Callable):
     """Replay"""
-    counter_key = method.__qualname__
-    input_key = method.__qualname__ + ':inputs'
-    output_key = method.__qualname__ + ':outputs'
-    this = method.__self__
-
-    counter = this.get_str(counter_key)
-    history = list(zip(this.get_list(input_key),
-                       this.get_list(output_key)))
-    print("{} was called {} times:".format(counter_key, counter))
-    for call in history:
-        value = this.get_str(call[0])
-        key = this.get_str(call[1])
-        print("{}(*{}) -> {}".format(counter_key, value, key))
+    client = redis.Redis()
+    storage = Cache.store.__qualname__
+    inputs = client.lrange("{}:inputs".format(storage), 0, -1)
+    outputs = client.lrange("{}:outputs".format(storage), 0, -1)
+    print("{} was called {} times:".format(storage,
+          client.get(storage).decode("utf-8")))
+    for i, o in tuple(zip(inputs, outputs)):
+        print("{}(*('{}',)) -> {}".format(storage, i.decode("utf-8"),
+              o.decode("utf-8")))
 
 
 class Cache:
@@ -71,10 +66,6 @@ class Cache:
         if fn:
             return fn(self._redis.get(key))
         return self._redis.get(key)
-
-    def get_list(self, k: str) -> List:
-        """get list"""
-        return self._redis.lrange(k, 0, -1)
 
     def get_str(self, data: bytes) -> str:
         """Convert bytes to str"""
