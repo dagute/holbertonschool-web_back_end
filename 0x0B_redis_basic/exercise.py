@@ -37,15 +37,15 @@ def call_history(method: Callable) -> Callable:
 
 def replay(method: Callable):
     """Replay function"""
-    client = redis.Redis()
+    c = redis.Redis()
     storage = Cache.store.__qualname__
-    inputs = client.lrange("{}:inputs".format(storage), 0, -1)
-    outputs = client.lrange("{}:outputs".format(storage), 0, -1)
-    print("{} was called {} times:".format(storage,
-          client.get(storage).decode("utf-8")))
+    aux = c.get(name).decode('utf-8')
+    inputs = c.lrange("{}:inputs".format(storage), 0, -1)
+    outputs = c.lrange("{}:outputs".format(storage), 0, -1)
+    print("{} was called {} times:".format(storage, aux))
     for i, o in tuple(zip(inputs, outputs)):
         print("{}(*('{}',)) -> {}".format(storage, i.decode("utf-8"),
-              o.decode("utf-8")))
+                                          o.decode("utf-8")))
 
 
 class Cache:
