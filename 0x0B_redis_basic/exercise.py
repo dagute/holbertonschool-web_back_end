@@ -12,6 +12,7 @@ def count_calls(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper(self, args):
+        """Wrapper function"""
         k = method(self, args)
         self._redis.incr(key)
         return k
@@ -26,6 +27,7 @@ def call_history(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper(self, *args):
+        """Wrapper function"""
         self._redis.rpush(input_key, str(args))
         res = method(self, *args)
         self._redis.rpush(output_key, str(res))
@@ -34,7 +36,7 @@ def call_history(method: Callable) -> Callable:
 
 
 def replay(method: Callable):
-    """Replay"""
+    """Replay function"""
     client = redis.Redis()
     storage = Cache.store.__qualname__
     inputs = client.lrange("{}:inputs".format(storage), 0, -1)
@@ -55,14 +57,14 @@ class Cache:
     @call_history
     @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
-        """Store"""
+        """takes a data argument and returns a string"""
         key = str(uuid.uuid1())
         self._redis.mset({key: data})
         return key
 
     def get(self, key: str,
             fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
-        """Get"""
+        """take a key string argument """
         if fn:
             return fn(self._redis.get(key))
         return self._redis.get(key)
