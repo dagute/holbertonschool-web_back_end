@@ -2,12 +2,15 @@
 -- by the second number or returns 0 if the second number == 0
 
 DELIMITER //
-CREATE FUNCTION SafeDiv (a INT, b INT) RETURNS INT
+DROP FUNCTION IF EXISTS SafeDiv;
+CREATE FUNCTION SafeDiv (a INT, b INT) RETURNS FLOAT
 BEGIN
+DECLARE result FLOAT;
     IF b=0 THEN
-        RETURN 0;
+        SET result = 0;
     ELSE
-        RETURN a DIV b;
+        SET result = a / b;
     END IF;
+    RETURN result;
 END//
 DELIMITER ;
