@@ -9,4 +9,4 @@ export default function guardrail(mathFunction) {
     queue.push(val);
     queue.push('Guardrail was processed');
     return queue;
-  }
+}
