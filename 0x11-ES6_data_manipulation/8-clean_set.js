@@ -4,7 +4,8 @@ export default function cleanSet(set, startString) {
     return finalString;
   set.forEach((item) => {
     if (item && item.startsWith(startString))
-      finalString += `${item.slice(startString.length)}-`});
+      finalString += `${item.slice(startString.length)}-`;
+    });
 
   return finalString.slice(0, finalString.length - 1);
 }
