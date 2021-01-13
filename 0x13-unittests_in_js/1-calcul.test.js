@@ -2,25 +2,17 @@ const calculateNumber = require("./1-calcul.js");
 const mocha = require('mocha');
 const assert = require("assert");
 
-describe('calculateNumber', () => {
+describe('calculateNumberWithType', () => {
   it('returns rounded sum with SUM', () => {
-  assert.strictEqual(calculateNumber(2, 2), 4);
-  assert.strictEqual(calculateNumber(1.5, 3.2), 5);
-  assert.strictEqual(calculateNumber(1.3, 3.7), 5);
-  assert.strictEqual(calculateNumber(-1, -3), -4);
-  assert.strictEqual(calculateNumber(-1.2, -3.8), -5);
+    assert.strictEqual(calculateNumber('SUM', 1.4, 4.5), 6);
   });
   it('returns rounded sum with SUBTRACT', () => {
-      assert.strictEqual(calculateNumber('SUBTRACT', 2, 4), -2);
-      assert.strictEqual(calculateNumber('SUBTRACT', 1.7, 3), -1);
-      assert.strictEqual(calculateNumber('SUBTRACT', 1.4, 4), -3);
-      assert.strictEqual(calculateNumber('SUBTRACT', -1, -3), 2);
-      assert.strictEqual(calculateNumber('SUBTRACT',-1.4, -3.6), 3);
+    assert.strictEqual(calculateNumber('SUBTRACT', 1.4, 4.5), -4);
   });
   it('returns rounded sum with DIVIDE', () => {
-      assert.strictEqual(calculateNumber('DIVIDE', 1.4, 4.5), 0.2);
+    assert.strictEqual(calculateNumber('DIVIDE', 1.4, 4.5), 0.2);
   });
-  it('returns error string when DIVIDE by 0', () => {
-      assert.strictEqual(calculateNumber('DIVIDE', 1.7, 0), 'Error');
+  it('divide with b == 0', () => {
+    assert.strictEqual(calculateNumber('DIVIDE', 1.4, 0), 'ERROR');
   });
 });

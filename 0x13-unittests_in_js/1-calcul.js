@@ -12,9 +12,10 @@ function calculateNumber(type, x, y) {
   if (type === 'SUBTRACT') {
     return xRound - yRound;
   }
-    
+  
+  if (type == 'SUM') {
   return xRound + yRound;
+  }
 }
-  
+
 module.exports = calculateNumber;
-  
