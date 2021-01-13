@@ -3,7 +3,7 @@ function calculateNumber(type, x, y) {
   const yRound = Math.round(y);
   
   if (type === 'DIVIDE') {
-    if (xRound === 0) {
+    if (yRound === 0) {
       return 'Error';
     }
     return xRound / yRound;
@@ -13,9 +13,9 @@ function calculateNumber(type, x, y) {
     return xRound - yRound;
   }
   
-  if (type == 'SUM') {
+  if (type === 'SUM') {
   return xRound + yRound;
-  }
+  };
 }
 
 module.exports = calculateNumber;
